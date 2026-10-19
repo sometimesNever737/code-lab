@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#
+# 在当前目录下新建一个指定名称的子目录，并生成空的 index.ts / index.py / readme.md
+#
+# 用法（在 problems/<分类>/ 目录下执行）：
+#   ../../scripts/mp two-sum
+#
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+  echo "用法: $(basename "$0") <子目录名称>" >&2
+  exit 1
+fi
+
+name=$1
+if [ -z "$name" ]; then
+  echo "错误: 子目录名称不能为空" >&2
+  exit 1
+fi
+
+# 已存在时直接报错退出，避免误改已有题目
+if [ -e "$name" ]; then
+  echo "错误: $name 已存在" >&2
+  exit 1
+fi
+
+mkdir -p "$name"
+touch "$name/index.ts" "$name/index.py" "$name/readme.md"
+
+echo "已创建 $name/ (index.ts, index.py, readme.md)"
